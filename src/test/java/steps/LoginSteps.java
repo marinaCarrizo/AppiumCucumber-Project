@@ -19,37 +19,38 @@ public class LoginSteps {
     @Inject
     HomeScreen homeScreen;
 
-   @When("I enter my username {string}")
-    public void iEnterMyUsername(String username){
-       loginScreen.setUsername(username);
-   }
+    @When("I enter my username {string}")
+    public void iEnterMyUsername(String username) {
+        loginScreen.setUsername(username);
+    }
+
     @And("I enter my password {string}")
     public void iEnterMyPassword(String password) {
-       loginScreen.setPassword(password);
+        loginScreen.setPassword(password);
     }
 
     @And("I attempt to login")
     public void iAttemptToLogin() {
-       loginScreen.tapLoginButton();
+        loginScreen.tapLoginButton();
     }
 
     @Then("I should see the Samples List")
     public void iShouldSeeTheSamplesList(DataTable dataTable) {
-       List<Map<String,String>> samples = dataTable.asMaps(String.class, String.class);
-       for (Map<String,String> sample: samples)
-           Assert.assertTrue(homeScreen.elementIsVisible(sample.get("Title")));
-
-
+        List<Map<String, String>> samples = dataTable.asMaps(String.class, String.class);
+        for (Map<String, String> sample : samples)
+            Assert.assertTrue(homeScreen.elementIsVisible(sample.get("Title")));
     }
 
     @Then("I should see the invalid credentials popup")
     public void iShouldSeeTheInvalidCredentialsPopup() {
-        Assert.assertEquals(loginScreen.getInvalidCredsAlertMessage(),"Invalid  Credentials");
-
+        Assert.assertEquals(loginScreen.getInvalidCredsAlertMessage(), "Invalid  Credentials");
     }
-    @Given("I login with valid credentials {string} {string}")
+
+    @Given("I login with valid credentials {string}{string}")
     public void iLoginWithValidCredentials(String user, String password) {
-       loginScreen.login(user,password);
+        loginScreen.setUsername(user);
+        loginScreen.setPassword(password);
+        loginScreen.tapLoginButton();
 
     }
 }
